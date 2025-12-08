@@ -13,7 +13,7 @@ const App: React.FC = () => {
     <div className="min-h-screen text-slate-200 selection:bg-cyan-500/30 selection:text-cyan-200">
       {/* Background Image - Please ensure 'background.jpg' is in your public folder */}
       <img 
-        src="/background.jpg" 
+        src="./background.jpg" 
         alt="Astrophotography Background"
         className="fixed top-0 left-0 w-full h-full object-cover -z-20"
       />
