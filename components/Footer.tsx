@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stars } from 'lucide-react';
+import { Stars, Instagram } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -7,15 +7,21 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-2 text-slate-200 font-bold tracking-wider">
           <Stars className="w-5 h-5 text-purple-400" />
-          THE ASTROPHOTOGRAPHY WEBSITE
+          NIGHTLIGHTS ASTROPHOTOGRAPHY
         </div>
+
+        <a
+          href="https://instagram.com/trex.nightlights"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 text-slate-400 hover:text-pink-400 transition-colors"
+        >
+          <Instagram className="w-5 h-5" />
+          <span className="font-medium">trex.nightlights</span>
+        </a>
+
         <div className="text-slate-500 text-sm">
           &copy; {new Date().getFullYear()} Educational Purpose Only.
-        </div>
-        <div className="flex gap-4">
-            <span className="w-2 h-2 rounded-full bg-slate-800"></span>
-            <span className="w-2 h-2 rounded-full bg-slate-700"></span>
-            <span className="w-2 h-2 rounded-full bg-slate-600"></span>
         </div>
       </div>
     </footer>

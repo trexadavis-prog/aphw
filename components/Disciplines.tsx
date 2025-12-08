@@ -31,10 +31,11 @@ const Disciplines: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-purple-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             <div className="h-48 relative overflow-hidden">
-               {/* Simulating image load with gradient/icon since I cannot load real heavy images effectively */}
-              <div className="absolute inset-0 bg-slate-800 flex items-center justify-center">
-                 <item.icon className="w-16 h-16 text-slate-600 group-hover:text-purple-400 transition-colors duration-300" />
-              </div>
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
             </div>
 
             <div className="p-6 flex-1 flex flex-col">
@@ -44,7 +45,7 @@ const Disciplines: React.FC = () => {
                   {item.title}
                 </h3>
               </div>
-              
+
               <p className="text-slate-300 mb-6 text-sm leading-relaxed">
                 {item.description}
               </p>

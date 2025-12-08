@@ -14,11 +14,11 @@ const Hero: React.FC = () => {
         <h2 className="text-cyan-400 tracking-[0.2em] text-sm md:text-base font-semibold uppercase mb-4 neon-text-blue">
           Mastering the Night Sky
         </h2>
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400 mb-6 drop-shadow-2xl">
-          The Astrophotography <br /> Website
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 drop-shadow-2xl">
+          Nightlights <br /> Astrophotography
         </h1>
         <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
-          The art of capturing the unseen. To photograph the cosmos is to wage war 
+          The art of capturing the unseen. To photograph the cosmos is to wage war
           against Earth's rotation and the scarcity of light itself.
         </p>
       </motion.div>

@@ -1,17 +1,17 @@
-import { 
-  Aperture, 
-  Camera, 
-  Compass, 
-  Cpu, 
-  Eye, 
-  Focus, 
-  Globe, 
-  Image as ImageIcon, 
-  Layers, 
-  Moon, 
-  Mountain, 
-  Settings, 
-  Sun, 
+import {
+  Aperture,
+  Camera,
+  Compass,
+  Cpu,
+  Eye,
+  Focus,
+  Globe,
+  Image as ImageIcon,
+  Layers,
+  Moon,
+  Mountain,
+  Settings,
+  Sun,
   ThermometerSnowflake,
   Video
 } from 'lucide-react';
@@ -28,7 +28,7 @@ export const DISCIPLINES: Discipline[] = [
       'Emphasis on composition and foreground interest.'
     ],
     icon: Mountain,
-    image: 'https://picsum.photos/800/600?grayscale&blur=2' // Placeholder
+    image: './images/DSC00040.jpg'
   },
   {
     id: 'dso',
@@ -40,7 +40,7 @@ export const DISCIPLINES: Discipline[] = [
       'Heavily reliant on precise tracking mounts.'
     ],
     icon: Globe,
-    image: 'https://picsum.photos/800/601?grayscale&blur=2'
+    image: './images/IMG_4881.jpg'
   },
   {
     id: 'planetary',
@@ -52,7 +52,7 @@ export const DISCIPLINES: Discipline[] = [
       'Selects only the sharpest frames for stacking.'
     ],
     icon: Moon,
-    image: 'https://picsum.photos/800/602?grayscale&blur=2'
+    image: './images/IMG_4946.jpg'
   }
 ];
 
