@@ -3,9 +3,17 @@ import Navigation from './Navigation';
 import Footer from './Footer';
 import StarField from './StarField';
 import backgroundSvg from '../background.svg';
-import { Mail, User, ChevronLeft } from 'lucide-react';
+import { Mail, User, ChevronLeft, Check } from 'lucide-react';
 
 const About: React.FC = () => {
+    const [copied, setCopied] = React.useState(false);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText('trexadavis@gmail.com');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
     return (
         <div className="min-h-screen text-slate-200 selection:bg-cyan-500/30 selection:text-cyan-200 flex flex-col">
             {/* Background Image */}
@@ -54,13 +62,23 @@ const About: React.FC = () => {
 
                             <div className="flex flex-col items-center justify-center py-8 border-t border-slate-800/50">
                                 <h3 className="font-['Space_Grotesk'] text-xl text-white mb-2 font-bold">Trex Davis</h3>
-                                <a
-                                    href="mailto:trexadavis@gmail.com"
-                                    className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors group bg-cyan-950/30 px-6 py-3 rounded-full border border-cyan-500/20 hover:border-cyan-500/50"
+                                <button
+                                    onClick={handleCopy}
+                                    className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors group bg-cyan-950/30 px-6 py-3 rounded-full border border-cyan-500/20 hover:border-cyan-500/50 cursor-pointer"
+                                    title="Click to copy email"
                                 >
-                                    <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                                    <span className="font-medium text-lg">trexadavis@gmail.com</span>
-                                </a>
+                                    {copied ? (
+                                        <>
+                                            <Check className="w-5 h-5 text-green-400" />
+                                            <span className="font-medium text-lg text-green-400">Copied!</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                            <span className="font-medium text-lg">trexadavis@gmail.com</span>
+                                        </>
+                                    )}
+                                </button>
                             </div>
                         </div>
                     </div>
