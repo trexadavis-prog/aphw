@@ -30,12 +30,24 @@ const Navigation: React.FC = () => {
         </a>
 
         {/* Desktop Nav - Hidden as links moved to Hero, but reused for Calendar Button */}
-        <div className="hidden md:flex gap-8">
+        <div className="hidden md:flex gap-4">
           <Link
             to="/moon-calendar"
             className="text-sm font-medium text-cyan-400 hover:text-white border border-cyan-500/50 rounded-full px-4 py-2 transition-all hover:bg-cyan-900/50 flex items-center gap-2"
           >
             <span>2026 Moon Calendar</span>
+          </Link>
+          <Link
+            to="/camera-setup"
+            className="text-sm font-medium text-purple-400 hover:text-white border border-purple-500/50 rounded-full px-4 py-2 transition-all hover:bg-purple-900/50 flex items-center gap-2"
+          >
+            <span>Camera Settings</span>
+          </Link>
+          <Link
+            to="/star-map"
+            className="text-sm font-medium text-green-400 hover:text-white border border-green-500/50 rounded-full px-4 py-2 transition-all hover:bg-green-900/50 flex items-center gap-2"
+          >
+            <span>Star Map</span>
           </Link>
         </div>
 

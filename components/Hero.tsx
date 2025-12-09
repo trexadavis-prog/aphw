@@ -23,22 +23,26 @@ const Hero: React.FC = () => {
         </p>
 
         {/* Centered Navigation */}
-        {/* Centered Navigation */}
         <div className="flex flex-nowrap justify-center items-center gap-4 md:gap-6 mb-8 w-full max-w-full overflow-x-auto pb-2 scrollbar-hide">
           {[
-            { href: '#disciplines', label: 'Disciplines' },
-            { href: '#gear', label: 'Gear' },
-            { href: '#calculator', label: 'Shutterspeed Calculator' },
-            { href: '#calibration', label: 'Calibration' },
-            { href: '#workflow', label: 'Workflow' },
+            { id: 'disciplines', label: 'Disciplines' },
+            { id: 'gear', label: 'Gear' },
+            { id: 'calculator', label: 'Shutterspeed Calculator' },
+            { id: 'calibration', label: 'Calibration' },
+            { id: 'workflow', label: 'Workflow' },
           ].map((link) => (
-            <a
+            <button
               key={link.label}
-              href={link.href}
+              onClick={() => {
+                const element = document.getElementById(link.id);
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
               className="whitespace-nowrap flex-1 text-center text-xs md:text-sm font-medium text-cyan-400 hover:text-white uppercase tracking-widest transition-all duration-300 border border-cyan-500/30 hover:border-cyan-400 rounded px-3 py-2 hover:bg-cyan-950/30 min-w-fit"
             >
               {link.label}
-            </a>
+            </button>
           ))}
         </div>
       </motion.div>
@@ -49,10 +53,13 @@ const Hero: React.FC = () => {
         transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-10 z-10"
       >
-        <a href="#disciplines" className="flex flex-col items-center text-slate-400 hover:text-white transition-colors">
+        <button
+          onClick={() => document.getElementById('disciplines')?.scrollIntoView({ behavior: 'smooth' })}
+          className="flex flex-col items-center text-slate-400 hover:text-white transition-colors"
+        >
           <span className="text-sm mb-2 uppercase tracking-widest">Begin Transmission</span>
           <ArrowDown className="animate-bounce w-6 h-6" />
-        </a>
+        </button>
       </motion.div>
 
       {/* Vignette Overlay */}
