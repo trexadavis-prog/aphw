@@ -4,6 +4,7 @@ import Home from './components/Home';
 import MoonCalendar from './components/MoonCalendar';
 import CameraSetup from './components/CameraSetup';
 import StarMap from './components/StarMap';
+import About from './components/About';
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Route path="/moon-calendar" element={<MoonCalendar />} />
         <Route path="/camera-setup" element={<CameraSetup />} />
         <Route path="/star-map" element={<StarMap />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );

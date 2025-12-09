@@ -7,31 +7,73 @@ const StarMap: React.FC = () => {
     const [locationName, setLocationName] = useState<string>("Detecting Location...");
     const [permissionDenied, setPermissionDenied] = useState(false);
 
-    useEffect(() => {
+    // Toggles
+    const [showConstellations, setShowConstellations] = useState(true);
+    const [showCelestialObjects, setShowCelestialObjects] = useState(false);
+
+    const handleLocateMe = () => {
+        setLocationName("Detecting Location...");
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setCoords({
-                        lat: position.coords.latitude,
-                        long: position.coords.longitude
-                    });
-                    const hemisphere = position.coords.latitude >= 0 ? "Northern" : "Southern";
-                    setLocationName(`Live View • ${hemisphere} Hemisphere`);
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const long = position.coords.longitude;
+
+                    setCoords({ lat, long });
+                    setPermissionDenied(false);
+
+                    // Default fallback
+                    const hemisphere = lat >= 0 ? "Northern" : "Southern";
+                    let determinedLocation = `Live View • ${hemisphere} Hemisphere`;
+
+                    try {
+                        // Reverse geocoding to get State/Region
+                        const response = await fetch(
+                            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`
+                        );
+                        if (response.ok) {
+                            const data = await response.json();
+                            // "principalSubdivision" usually holds the State name (e.g., "Utah")
+                            // "countryCode" holds the 2-letter country code (e.g., "US")
+                            if (data.principalSubdivision) {
+                                determinedLocation = `Live View • ${data.principalSubdivision}, ${data.countryCode || ''}`;
+                            } else if (data.countryName) {
+                                determinedLocation = `Live View • ${data.countryName}`;
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Reverse geocoding failed:", error);
+                        // Keep hemisphere fallback
+                    }
+
+                    setLocationName(determinedLocation);
                 },
                 (error) => {
                     console.error("Geolocation denied or error:", error);
                     setPermissionDenied(true);
-                    // Fallback to Flagstaff
-                    setCoords({ lat: 35.1983, long: -111.6513 });
-                    setLocationName("Live View • Flagstaff, AZ (Default)");
+                    let errorMsg = "Locate Failed";
+                    if (error.code === 1) errorMsg = "Location Denied • Check Browser Settings";
+                    else if (error.code === 2) errorMsg = "Position Unavailable";
+                    else if (error.code === 3) errorMsg = "Timeout";
+
+                    // Fallback to Arches National Park, Utah
+                    setCoords({ lat: 38.7331, long: -109.5925 });
+                    setLocationName(`${errorMsg} • Defaulting to Arches NP`);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
                 }
             );
         } else {
-            console.log("Geolocation not supported");
-            // Fallback
-            setCoords({ lat: 35.1983, long: -111.6513 });
-            setLocationName("Live View • Fallback Location");
+            setLocationName("Not Supported • Defaulting to Arches NP");
         }
+    };
+
+    useEffect(() => {
+        // Try automatic detection on mount
+        handleLocateMe();
     }, []);
 
     const width = '100%';
@@ -47,8 +89,19 @@ const StarMap: React.FC = () => {
         "mag": 1.0
     }]));
 
+    // Dynamic params
+    // deepsky=true enables galaxies/nebulae
+    // showplanets=true, showmoon=true, showorbit=false, showplanetlabels=true enables solar system objects
+    const celestialParams = showCelestialObjects
+        ? "&showplanets=true&showplanetlabels=true&showmoon=true&showorbits=false&meteorshowers=true&deepsky=true"
+        : "&showplanets=false&showplanetlabels=false&showmoon=false&showorbits=false&meteorshowers=false&deepsky=false";
+
+    const constellationParams = showConstellations
+        ? "&constellations=true&constellationlabels=true"
+        : "&constellations=false&constellationlabels=false";
+
     const embedUrl = coords
-        ? `https://virtualsky.lco.global/embed/index.html?longitude=${coords.long}&latitude=${coords.lat}&projection=stereo&constellations=true&constellationlabels=true&meteorshowers=true&showstarlabels=true&live=true&az=0&cardinalpoints=true&gridlines_az=true&background=020617&colors=cyan&objects=${northStarObj}`
+        ? `https://virtualsky.lco.global/embed/index.html?longitude=${coords.long}&latitude=${coords.lat}&projection=stereo${constellationParams}&showstarlabels=true&live=true&az=0&cardinalpoints=true&gridlines_az=true${celestialParams}&background=020617&colors=cyan&objects=${northStarObj}`
         : "";
 
     return (
@@ -74,14 +127,50 @@ const StarMap: React.FC = () => {
                         <span className="font-bold tracking-wide">NORTH STAR (Polaris)</span>
                     </div>
 
-                    {/* Top Right: Live View Status */}
-                    <div className="absolute top-4 right-4 z-10 bg-slate-950/80 backdrop-blur-md px-3 py-1 rounded text-xs text-slate-400 border border-slate-800 flex items-center gap-2 pointer-events-none transition-all">
-                        <Compass className="w-3 h-3 text-cyan-500" />
-                        <span>{locationName}</span>
+                    {/* Top Right: Live View Status & Controls */}
+                    <div className="absolute top-4 right-4 z-10 flex flex-col items-end gap-2">
+                        <div className="flex items-center gap-2 mb-2">
+                            <button
+                                onClick={() => setShowConstellations(!showConstellations)}
+                                className={`px-3 py-1 rounded text-xs border transition-all flex items-center gap-2 ${showConstellations
+                                        ? "bg-cyan-950/80 text-cyan-400 border-cyan-500/50 shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+                                        : "bg-slate-950/80 text-slate-500 border-slate-800 hover:text-slate-300"
+                                    }`}
+                            >
+                                <MapIcon className="w-3 h-3" />
+                                <span>Constellations</span>
+                            </button>
+                            <button
+                                onClick={() => setShowCelestialObjects(!showCelestialObjects)}
+                                className={`px-3 py-1 rounded text-xs border transition-all flex items-center gap-2 ${showCelestialObjects
+                                        ? "bg-purple-950/80 text-purple-400 border-purple-500/50 shadow-[0_0_10px_rgba(192,132,252,0.3)]"
+                                        : "bg-slate-950/80 text-slate-500 border-slate-800 hover:text-slate-300"
+                                    }`}
+                            >
+                                <span className="text-[10px]">🪐</span>
+                                <span>Planets & Deep Sky</span>
+                            </button>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={handleLocateMe}
+                                className="bg-slate-950/80 backdrop-blur-md px-3 py-1 rounded text-xs text-cyan-400 border border-cyan-900 hover:bg-cyan-950/50 hover:border-cyan-500 transition-all flex items-center gap-2 cursor-pointer"
+                                title="Update location"
+                            >
+                                <Compass className="w-3 h-3" />
+                                <span>Locate Me</span>
+                            </button>
+                            <div className="bg-slate-950/80 backdrop-blur-md px-3 py-1 rounded text-xs text-slate-400 border border-slate-800 flex items-center gap-2 pointer-events-none transition-all">
+                                <Globe className="w-3 h-3 text-cyan-500" />
+                                <span>{locationName}</span>
+                            </div>
+                        </div>
                     </div>
 
                     {embedUrl ? (
                         <iframe
+                            key={embedUrl} // Force reload when params change
                             src={embedUrl}
                             style={{ width: '100%', height: '70vh', border: 'none' }}
                             title="Interactive Star Map"

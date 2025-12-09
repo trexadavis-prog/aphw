@@ -10,15 +10,23 @@ const Footer: React.FC = () => {
           NIGHTLIGHTS ASTROPHOTOGRAPHY
         </div>
 
-        <a
-          href="https://instagram.com/trex.nightlights"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 text-slate-400 hover:text-pink-400 transition-colors"
-        >
-          <Instagram className="w-5 h-5" />
-          <span className="font-medium">trex.nightlights</span>
-        </a>
+        <div className="flex items-center gap-6">
+          <a
+            href="#/about"
+            className="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-medium"
+          >
+            About Me
+          </a>
+          <a
+            href="https://instagram.com/trex.nightlights"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-slate-400 hover:text-pink-400 transition-colors"
+          >
+            <Instagram className="w-5 h-5" />
+            <span className="font-medium">trex.nightlights</span>
+          </a>
+        </div>
 
         <div className="text-slate-500 text-sm">
           &copy; {new Date().getFullYear()} Educational Purpose Only.
